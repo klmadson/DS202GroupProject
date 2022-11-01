@@ -1,6 +1,6 @@
 ---
 title: "DS202: Final Project Summary 1"
-output: html_document
+output: github_document
 date: "2022-11-01"
 ---
 
