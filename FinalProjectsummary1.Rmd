@@ -8,19 +8,27 @@ date: "2022-11-01"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+
+
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library("readxl")
+
+data <- read_excel("C:\\Users\\dis90\\Downloads\\Copy of Maths.xlsx")
+
+head(data)
+```
+
+This is a data set comprised of data collected from students attending two different Portuguese secondary schools. In Portugal, the age of the students in secondary schools roughly correspond to those of American high schools, with students ranging from 15 to 18 years old. The data set contains many variables which were collected in conjunction with the target variable of semester grades, contained in the variables `G1`, `G2`, and `G3`. These grades represent the students' performance in their Math classes.
 
 
 ```{r}
+summary(data)
 
+dim(data)
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r}
-
-```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
