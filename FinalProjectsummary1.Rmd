@@ -28,7 +28,45 @@ This is a data set comprised of data collected from students attending two diffe
 summary(data)
 
 dim(data)
+
+data$school <- as.factor(data$school)
+
+data$sex <- as.factor(data$sex)
+
+data$age <- as.factor(data$age)
+
+data %>% 
+  group_by(`school`) %>%
+  summarize(n_students = n())
+
+data %>% 
+  group_by(`sex`) %>%
+  summarize(n_sex = n())
+
+data %>%
+  group_by(`age`) %>%
+  summarize(`n_age` = n())
+  
 ```
 
+There are 397 students listed in the data set. 350 of the students go to the school "GP", while only 47 of the students attend the school "MS". There are 209 females and 188 males.
+
+```{r}
+data %>%
+  ggplot(aes(`age`)) +
+  geom_bar()
+
+data_avg <- data %>%
+  group_by(`school`) %>%
+  summarise(avg_final_grade = mean(`G3`))
+
+data_avg %>%
+  ggplot(aes(x = `school`, y = `avg_final_grade`)) +
+  geom_bar(stat = "identity")
+```
+
+It looks like the highest proportion of students are around 16 years old. In terms of the highest average final grade, it appears as if "GP" scored the highest.
+
+Going forward, it will be necessary for us to convert some variables into different types, as there are many variables classed as character that would be more manageable as factors. Moreover, there is a possibility that we can engineer new features based on what we have in order to run interesting algorithms. Overall, there is a lot to work with.
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

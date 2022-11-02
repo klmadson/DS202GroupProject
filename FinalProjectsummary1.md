@@ -117,5 +117,88 @@ dim(data)
 
     ## [1] 397  33
 
+``` r
+data$school <- as.factor(data$school)
+
+data$sex <- as.factor(data$sex)
+
+data$age <- as.factor(data$age)
+
+data %>% 
+  group_by(`school`) %>%
+  summarize(n_students = n())
+```
+
+    ## # A tibble: 2 × 2
+    ##   school n_students
+    ##   <fct>       <int>
+    ## 1 GP            350
+    ## 2 MS             47
+
+``` r
+data %>% 
+  group_by(`sex`) %>%
+  summarize(n_sex = n())
+```
+
+    ## # A tibble: 2 × 2
+    ##   sex   n_sex
+    ##   <fct> <int>
+    ## 1 F       209
+    ## 2 M       188
+
+``` r
+data %>%
+  group_by(`age`) %>%
+  summarize(`n_age` = n())
+```
+
+    ## # A tibble: 8 × 2
+    ##   age   n_age
+    ##   <fct> <int>
+    ## 1 15       82
+    ## 2 16      104
+    ## 3 17       98
+    ## 4 18       83
+    ## 5 19       25
+    ## 6 20        3
+    ## 7 21        1
+    ## 8 22        1
+
+There are 397 students listed in the data set. 350 of the students go to
+the school “GP”, while only 47 of the students attend the school “MS”.
+There are 209 females and 188 males.
+
+``` r
+data %>%
+  ggplot(aes(`age`)) +
+  geom_bar()
+```
+
+![](FinalProjectsummary1_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
+``` r
+data_avg <- data %>%
+  group_by(`school`) %>%
+  summarise(avg_final_grade = mean(`G3`))
+
+data_avg %>%
+  ggplot(aes(x = `school`, y = `avg_final_grade`)) +
+  geom_bar(stat = "identity")
+```
+
+![](FinalProjectsummary1_files/figure-gfm/unnamed-chunk-3-2.png)<!-- -->
+
+It looks like the highest proportion of students are around 16 years
+old. In terms of the highest average final grade, it appears as if “GP”
+scored the highest.
+
+Going forward, it will be necessary for us to convert some variables
+into different types, as there are many variables classed as character
+that would be more manageable as factors. Moreover, there is a
+possibility that we can engineer new features based on what we have in
+order to run interesting algorithms. Overall, there is a lot to work
+with.
+
 Note that the `echo = FALSE` parameter was added to the code chunk to
 prevent printing of the R code that generated the plot.
