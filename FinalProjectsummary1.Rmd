@@ -14,9 +14,12 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 library(ggplot2)
 library(dplyr)
-library("readxl")
 
-data <- read_excel("C:\\Users\\dis90\\Downloads\\Copy of Maths.xlsx")
+
+
+download.file("http://archive.ics.uci.edu/ml/machine-learning-databases/00320/student.zip", "student.zip")
+unzip("student.zip")
+data <- read.csv("student-mat.csv", head = TRUE, sep=";")
 
 head(data)
 ```
@@ -49,7 +52,7 @@ data %>%
   
 ```
 
-There are 397 students listed in the data set. 350 of the students go to the school "GP", while only 47 of the students attend the school "MS". There are 209 females and 188 males.
+There are 395 students listed in the data set. 349 of the students go to the school "GP", while only 46 of the students attend the school "MS". There are 208 females and 187 males.
 
 ```{r}
 data %>%
