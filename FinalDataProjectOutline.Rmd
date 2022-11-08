@@ -46,6 +46,9 @@ knitr::opts_chunk$set(echo = TRUE)
 - Bar graphs 
 - Scatter plots 
 
+> Other variables/relationships we want to look at 
+- considering the legal drinking age in Portugal is 18, we want to see if there are any variables that may be affected by students turning this age. This could possibly be seeing if alcohol consumption has a greater change on those below age 18 compared to those 18 and above, etc. 
+
 
 
 
