@@ -53,7 +53,11 @@ Note that the `echo = FALSE` parameter was added to the code chunk to prevent pr
 
 > Step 3: Once the above steps are completed, we believe, we could then go ahead and change the name of these variables in order to help viewers understand the meaning of each variable and the reasons we have taken them into consideration.
 
-> Step 4: Representing data can then be done by creating plots using ggplot2. This code would be utlized to create;
+> Step 4: Hypothesis Testing - 
+
+> Step 5: Calculate the mean and standard deviation of grades to get an average score of each student's predicted final grades
+
+> Step 6: Representing data can then be done by creating plots using ggplot2. This package will be utlized to create;
 - Box plots
 - Pie charts
 - Bar graphs 
