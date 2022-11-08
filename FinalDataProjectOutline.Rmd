@@ -3,6 +3,13 @@ title: "FinalDataProjectOutline"
 output: html_document
 date: "2022-11-08"
 ---
+
+<!-- README.md is generated from README.Rmd. Please edit the README.Rmd file -->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
 ## Outline of Exploration 
 
 > Step 1: With the given data, we are trying to generate predicted final grades of students in order to define a pattern through the variables in this data set. The variables that we would like to utlize are 
