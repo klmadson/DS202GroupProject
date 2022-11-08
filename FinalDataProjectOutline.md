@@ -10,9 +10,9 @@
 - Fjob, Mjob
 - Reason
 - Guardian
-- 
 > We will convert these character variables as factors in order to better analyze the data.
-> 
+
+
 > Step 2: Secondly, we would like the convert the below provided variables from binary "Yes and No" to 1 and 0.
 - Schoolsup
 - Famsup
