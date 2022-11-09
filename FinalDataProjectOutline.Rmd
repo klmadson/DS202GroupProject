@@ -7,7 +7,6 @@ editor_options:
     wrap: 72
 ---
 
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -23,7 +22,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 > Step 1: With the given data, we are trying to generate predicted final
 > grades of students in order to define a pattern through the variables
-> in this data set. The variables that we would like to utilize are:
+> in this data set. We will start by converting the following variables
+> into factors:
 >
 > -   School
 >
@@ -41,10 +41,6 @@ knitr::opts_chunk$set(echo = TRUE)
 >
 > -   Guardian
 
-> We will convert these character variables as factors in order to
-> better analyze the data.
-
-<<<<<<< HEAD
 > Step 2: Secondly, we would like the convert the below provided
 > variables from binary "Yes and No" to 1 and 0:
 >
@@ -67,7 +63,7 @@ knitr::opts_chunk$set(echo = TRUE)
 > Step 3: Once the above steps are completed, we believe that we could
 > then go ahead and change the name of these variables in order to help
 > viewers understand the meaning of each variable and the reasons we
-> have taken them into consideration.
+> have taken them into consideration. We will also remove any NA values.
 
 > Step 4: Calculate the mean and standard deviation of grades to get an
 > average score of each student's predicted final grades
@@ -93,23 +89,14 @@ knitr::opts_chunk$set(echo = TRUE)
 > Portuguese scores. We could then investigate which features appear to
 > be helpful in explaining the distribution of the difference.
 
+> Other variables/relationships we want to look at: considering the
+> legal drinking age in Portugal is 18, we want to see if there are any
+> variables that may be affected by students turning this age. This
+> could possibly be seeing if alcohol consumption has a greater change
+> on those below age 18 compared to those 18 and above, etc.
+
 > Conclusion: We will give a summary of our findings and try to give
 > broader context to our insights. Potential issues/limitations of the
 > data will also be addressed if necessary. Further questions and
 > suggestions will be proposed depending on our results.
-=======
-> Step 4: Removing NA values.
 
-> Step 5: Hypothesis Testing - 
-
-> Step 6: Calculate the mean and standard deviation of grades to get an average score of each student's predicted final grades
-
-> Step 7: Representing data can then be done by creating plots using ggplot2. This package will be utlized to create;
-- Box plots
-- Pie charts
-- Bar graphs 
-- Scatter plots 
-
-> Other variables/relationships we want to look at 
-- considering the legal drinking age in Portugal is 18, we want to see if there are any variables that may be affected by students turning this age. This could possibly be seeing if alcohol consumption has a greater change on those below age 18 compared to those 18 and above, etc. 
->>>>>>> 32270be4b9533a488e81599492982977374f8531
