@@ -2,6 +2,9 @@
 title: "FinalDataProjectOutline"
 output: html_document
 date: "2022-11-08"
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit the README.Rmd file -->
@@ -10,41 +13,87 @@ date: "2022-11-08"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Outline of Exploration 
+## Outline of Exploration
 
-> Step 1: With the given data, we are trying to generate predicted final grades of students in order to define a pattern through the variables in this data set. The variables that we would like to utlize are 
-- School
-- Age
-- Sex
-- FamSize
-- P Status
-- Fjob, Mjob
-- Reason
-- Guardian
-> We will convert these character variables as factors in order to better analyze the data.
+> Introduction: We will include an introduction in order to give context
+> to our data. We will search for figures and state some of the
+> prevailing ideas that may be popular with the public when it comes to
+> what factors into student performance in secondary education. We will
+> then give a general verbal summary of the data set, such as when,
+> where and why the data was collected.
 
-> Step 2: Secondly, we would like the convert the below provided variables from binary "Yes and No" to 1 and 0.
-- Schoolsup
-- Famsup
-- Activities
-- Nursery
-- Higher
-- Internet
-- Romantic
-- Paid
+> Step 1: With the given data, we are trying to generate predicted final
+> grades of students in order to define a pattern through the variables
+> in this data set. The variables that we would like to utilize are:
+>
+> -   School
+>
+> -   Age
+>
+> -   Sex
+>
+> -   FamSize
+>
+> -   P Status
+>
+> -   Fjob, Mjob
+>
+> -   Reason
+>
+> -   Guardian
 
-> Step 3: Once the above steps are completed, we believe, we could then go ahead and change the name of these variables in order to help viewers understand the meaning of each variable and the reasons we have taken them into consideration.
+> We will convert these character variables as factors in order to
+> better analyze the data.
 
-> Step 4: Hypothesis Testing - 
+> Step 2: Secondly, we would like the convert the below provided
+> variables from binary "Yes and No" to 1 and 0:
+>
+> -   Schoolsup
+>
+> -   Famsup
+>
+> -   Activities
+>
+> -   Nursery
+>
+> -   Higher
+>
+> -   Internet
+>
+> -   Romantic
+>
+> -   Paid
 
-> Step 5: Calculate the mean and standard deviation of grades to get an average score of each student's predicted final grades
+> Step 3: Once the above steps are completed, we believe that we could
+> then go ahead and change the name of these variables in order to help
+> viewers understand the meaning of each variable and the reasons we
+> have taken them into consideration.
 
-> Step 6: Representing data can then be done by creating plots using ggplot2. This package will be utlized to create;
-- Box plots
-- Pie charts
-- Bar graphs 
-- Scatter plots 
+> Step 4: Calculate the mean and standard deviation of grades to get an
+> average score of each student's predicted final grades
 
+> Step 5: Representing data can then be done by creating plots using
+> ggplot2. This package will be utlized to create box plots, pie charts,
+> bar graphs and scatter plots.
 
+> Step 6: Identify patterns and relationships between variables in the
+> dataset. For salient findings from our visualizations, run hypothesis
+> tests for statistical significance of in differences of means and get
+> 95% confidence intervals for population parameters. Compare our
+> prediction against outside figures, if possible.
 
+> Step 7: Train a ML regression model to predict student math grades. ML
+> possibilites include multiple linear regression and XGBoost (we are
+> still thinking about it). Run cross validation and confusion matrices.
+> Determine feature importance.
 
+> Possible Step 8: A twin data set of Portuguese scores are included in
+> the download file. We could also join final Portuguese scores to our
+> dataset and mutate a column with the difference between math and
+> Portuguese scores. We could then investigate which features appear to
+> be helpful in explaining the distribution of the difference.
+
+> Conclusion: We will give a summary of our findings and try to give
+> broader context to our insights. Potential issues/limitations of the
+> data will also be addressed if necessary. Further questions and
+> suggestions will be proposed depending on our results.
