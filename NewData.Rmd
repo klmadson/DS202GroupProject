@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 This is the possible new data set collected from PISA in 2018 of USA students downloaded from the package "learning tower" developed by Kevin Wang. (Uncomment the code and install package in order to view)
 
 ```{r}
-#install.packages("learningtower")
+install.packages("learningtower")
 ```
 
 ```{r cars}
@@ -30,12 +30,18 @@ USA_students <- Pisa_2018 %>% filter(`country` == "USA")
 View(USA_students)
 ```
 
-## Including Plots
+```{r}
+library(tidyverse)
+library (ggplot2)
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+USA_students %>%
+  ggplot(aes(x = math , y = science , color = internet)) + geom_point() + coord_flip()
+  
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r}
+
+```
+
+
+
