@@ -87,6 +87,12 @@ What are the variables that you will be using in the main part of the report? Wh
 
 Each line of exploration is supposed to be featured in one of the Results sections. Make sure to change to more interesting section headers!
 
+> How does the availability of educational resources affect student scores (Aditi)
+
+> How do parents affect the education of their offsprings (Kate)
+
+> Gender and correlation between scores - relationships between subject variables (Aaron)
+
 ## Results 1
 
 In your write-up, make sure to refer to all of the figures you create. You can include a hyperlink to the [scatterplot](#fig:scatterplot) by using the name of the code chunk (make sure, to give each code chunk a different name). In your markdown document you can create this link either by calling the function `chunkref` with the name of the code chunk in quotes, i.e. `` r chunkref("scatterplot") `` or by using the markdown expression `[scatterplot](#fig:scatterplot)`. Similarly, we can refer to the `r chunkref("2nd scatterplot")`. Note that the figure captions appear above the figures - this saves us from having to scroll up after following the link.
