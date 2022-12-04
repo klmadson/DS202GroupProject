@@ -75,6 +75,19 @@ library(tidyverse)
 library(ggplot2)
 ```
 
+```{r USA data}
+library(learningtower)
+
+Pisa_2018 <- load_student(year = "2018")
+
+Pisa_2018
+
+summary(Pisa_2018$country)
+library(dplyr)
+USA_students <- Pisa_2018 %>% filter(`country` == "USA")
+
+View(USA_students)
+```
 # Quick Data Summary
 
 1.  Resources
@@ -111,6 +124,60 @@ Additionally, you can also refer to different sections in your writeup by using 
 
 ## Parental Attainment
 
+```{r}
+USA_students<-USA_students %>%
+drop_na(mother_educ,father_educ)
+```
+
+```{r}
+table(USA_students$mother_educ)
+table(USA_students$father_educ)
+```
+
+```{r}
+high_educ<-USA_students %>% 
+ filter(mother_educ=="ISCED 3A",father_educ=="ISCED 3A") %>% head()
+high_educ
+```
+
+```{r}
+mean(high_educ$math)
+mean(high_educ$read)
+mean(high_educ$science)
+```
+
+```{r}
+low_educ<-USA_students %>% 
+ filter(mother_educ=="less than ISCED1",father_educ=="less than ISCED1") %>% head()
+low_educ
+```
+
+```{r}
+mean(low_educ$math)
+mean(low_educ$read)
+mean(low_educ$science)
+```
+
+```{r 1st bar graph, echo=FALSE, fig.cap="In this bar graph of math scores by mother and father education, there aren't any significant outliers or skew. From this graph, I found that for those with a parent with an education of ISCED 3, the student's scores were higher. As a follow-up, I plan to look at the other kinds of test scores to make comparisons.", message = FALSE}
+
+USA_students %>%
+  ggplot(aes(x=mother_educ, y=math,fill=father_educ)) + 
+    geom_bar(position="dodge", stat="identity")
+```
+
+```{r 2nd bar graph, echo=FALSE, fig.cap="In this bar graph of science scores by mother and father education, there aren't any significant outliers or skew. From this graph, I found similar data to math that for those with a parent with an education of ISCED 3, the student's scores were higher. As a follow-up, I plan to look at the other kinds of test scores to make comparisons.", message = FALSE}
+
+USA_students %>%
+  ggplot(aes(x=mother_educ, y=science,fill=father_educ)) + 
+    geom_bar(position="dodge", stat="identity")
+```
+
+```{r 3rd bar graph, echo=FALSE, fig.cap="In this bar graph of reading scores by mother and father education, there aren't any significant outliers or skew. From this graph, I found similar data to math and science scores, that for those with a parent with an education of ISCED 3, the student's scores were higher. This information confirms the idea that children have higher scores if their parents have more years in education.", message = FALSE}
+
+USA_students %>%
+  ggplot(aes(x=mother_educ, y=read,fill=father_educ)) + 
+    geom_bar(position="dodge", stat="identity")
+```
 ## Gender and other Insights
 
 ...
