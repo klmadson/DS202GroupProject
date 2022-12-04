@@ -124,16 +124,20 @@ Additionally, you can also refer to different sections in your writeup by using 
 
 ## Parental Attainment
 
+Within this line of exploration, I wanted to focus on how mother and father education levels can affect the child's score in math, science and reading. To start, I removed the NA values within the mother and father education level variables. 
 ```{r}
 USA_students<-USA_students %>%
 drop_na(mother_educ,father_educ)
 ```
+
+This table was created to determine within the data set, which levels of education were lowest and highest on the scale. 
 
 ```{r}
 table(USA_students$mother_educ)
 table(USA_students$father_educ)
 ```
 
+To further explore, I then filtered for the ISCED 3A, or the highest education on the scale and eventually filtered for the lowest education level or less than ISCED1. Then, I found the average test scores for all three subjects using those new data sets. 
 ```{r}
 high_educ<-USA_students %>% 
  filter(mother_educ=="ISCED 3A",father_educ=="ISCED 3A") %>% head()
@@ -157,6 +161,7 @@ mean(low_educ$math)
 mean(low_educ$read)
 mean(low_educ$science)
 ```
+From this information, it clearly shows that a high education for parents results in higher scores on average for children. To visualize this information and further validate this hypothesis, I created three bar graphs below. 
 
 ```{r 1st bar graph, echo=FALSE, fig.cap="In this bar graph of math scores by mother and father education, there aren't any significant outliers or skew. From this graph, I found that for those with a parent with an education of ISCED 3, the student's scores were higher. As a follow-up, I plan to look at the other kinds of test scores to make comparisons.", message = FALSE}
 
