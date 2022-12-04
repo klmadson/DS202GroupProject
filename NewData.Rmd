@@ -38,10 +38,52 @@ USA_students %>%
   ggplot(aes(x = math , y = science , color = internet)) + geom_point() + coord_flip()
   
 ```
-
 ```{r}
-
+USA_students<-USA_students %>%
+drop_na(mother_educ,father_educ)
 ```
 
+```{r}
+table(USA_students$mother_educ)
+table(USA_students$father_educ)
+```
 
+```{r}
+high_educ<-USA_students %>% 
+ filter(mother_educ=="ISCED 3A",father_educ=="ISCED 3A") %>% head()
+high_educ
+```
 
+```{r}
+mean(high_educ$math)
+mean(high_educ$read)
+mean(high_educ$science)
+```
+
+```{r}
+low_educ<-USA_students %>% 
+ filter(mother_educ=="less than ISCED1",father_educ=="less than ISCED1") %>% head()
+low_educ
+```
+```{r}
+mean(low_educ$math)
+mean(low_educ$read)
+mean(low_educ$science)
+```
+
+```{r}
+USA_students %>%
+  ggplot(aes(x=mother_educ, y=math,fill=father_educ)) + 
+    geom_bar(position="dodge", stat="identity")
+```
+```{r}
+USA_students %>%
+  ggplot(aes(x=mother_educ, y=science,fill=father_educ)) + 
+    geom_bar(position="dodge", stat="identity")
+```
+
+```{r}
+USA_students %>%
+  ggplot(aes(x=mother_educ, y=read,fill=father_educ)) + 
+    geom_bar(position="dodge", stat="identity")
+```
