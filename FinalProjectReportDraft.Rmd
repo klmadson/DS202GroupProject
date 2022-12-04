@@ -178,11 +178,14 @@ USA_students %>%
   ggplot(aes(x=mother_educ, y=read,fill=father_educ)) + 
     geom_bar(position="dodge", stat="identity")
 ```
+
 ## Gender and other Insights
 
 ...
 
 # Conclusions
+
+In terms of parental attainment, I found that for children with parents who have a higher education, tend to get higher test scores in all three areas of math, science and reading compared to those with parents who have a lower education on the ISCED scale. If we had more time, I would have explored whether one parent with a specific education level will have a greater influence on the child's scores even if the other parent is on the opposite side of the education level scale. 
 
 Give a quick summary of your work. Here is the place to be a bit critical and discuss potential limitations. Add a sentence on what else you would have liked to include in your data exploration if you had more time or more members in your team.
 
