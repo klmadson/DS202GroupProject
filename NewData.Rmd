@@ -34,10 +34,34 @@ View(USA_students)
 library(tidyverse)
 library (ggplot2)
 
+USA_students <- USA_students %>%
+  drop_na(internet)
+
 USA_students %>%
   ggplot(aes(x = math , y = science , color = internet)) + geom_point() + coord_flip()
   
 ```
+```{r}
+
+USA_students <- USA_students %>%
+  drop_na(computer)
+
+USA_students %>%
+  ggplot(aes(x = math , y = science , color = computer)) + geom_point() + coord_flip()
+```
+
+```{r}
+USA_students$total_scores <- USA_students$math + USA_students$science + USA_students$read
+
+USA_students %>%
+  ggplot(aes(x = total_scores)) + geom_histogram(color = "red" , fill = "white" , binwidth = 15) + facet_grid(computer~internet , labeller = label_both)
+```
+```{r}
+mean(USA_students$total_scores)
+```
+
+
+
 ```{r}
 USA_students<-USA_students %>%
 drop_na(mother_educ,father_educ)
@@ -65,6 +89,7 @@ low_educ<-USA_students %>%
  filter(mother_educ=="less than ISCED1",father_educ=="less than ISCED1") %>% head()
 low_educ
 ```
+
 ```{r}
 mean(low_educ$math)
 mean(low_educ$read)
