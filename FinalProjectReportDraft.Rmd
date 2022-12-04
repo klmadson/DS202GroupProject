@@ -1,0 +1,139 @@
+---
+title: 'Final Project Report: Draft'
+author: "Kathryn Madson, Aditi Pokharkar, Aaron Null"
+date: "2022-12-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = FALSE, warning = TRUE)
+
+
+knit_hooks$set( fig.cap = function(before, options, envir) {
+  if ( before ) {
+    chr <- sprintf("<p><small><strong><a name='fig:%s' value = %d>Figure %d</a></strong>: %s</small></p>", options$label, options$fig.num, options$fig.num, options$fig.cap)
+    chr <- sprintf("<p><small><strong><a name='fig:%s'>%s</a></strong>: %s</small></p>", options$label, options$label,  options$fig.cap)
+    
+    return(chr)
+  }
+})
+
+
+chunkref <- local({
+  function(chunklabel) {
+    sprintf('[%s](#%s)', chunklabel, paste0("fig:",chunklabel) )
+  }  
+})
+
+library(ggplot2)
+library(dplyr)
+```
+## DS 202: Data Acquisition and Exploratory Data Analysis {.unnumbered}
+
+# Student Success: An Examination of the Factors Behind Academic Performance in the United States {.unnumbered}
+
+Authors: Kathryn Madson, Aaron Null, Aditi Pokharkar
+
+## Abstract (TL;DR) {.unnumbered}
+
+The goal of our examination is to explore the different variables involved in distinguishing why some students perform well in certain subjects and others might not. PISA, or the Program for International Student Assessment, is an initiative that administers tests to a random sample of 15-year-old students in pre-selected schools in participating countries. The assessment tracks performance in reading, writing and mathematics and also involves administering a lengthy questionnaire, cataloging many variables related to things such as family, lifestyle and resources. Our goal is to explore the most recent PISA data from 2018 in the United States in order to further understand both what the students the score high have in common and what the lower scoring students might need in order to improve their outcome.
+
+-   what is the project about?
+-   what is the motivation for doing it?
+-   what data is your work based on? and where does it come from? = what are your main findings? (one sentence each)
+
+# Intro/Background/Motivation
+
+There are decades of research in support of the idea that higher levels of learning outcomes leads to higher economic growth and that investing in education can lead to higher salaries for workers and larger national GDP (Boser, 2022). Apart from the economic benefits of investing in education, there is also data to suggest a strong association between happiness and learning in general (Bower, 2022). PISA is a program administered by the OECD (Organisation for Economic Co-operation and Development), an organisation dedicated to gathering data in order to inform public policy decisions for its member states and set international standards. The PISA program allows national education systems to compared at a larger scale than ever before, allowing countries to learn from one another and separate what policies work and what do not. The organisation shares our conviction that discovering the patterns at work in student success in important in order to shape policy and ultimately improve the lives of students (and the citizenry at large) around the world.
+
+For our exploration, 4 distinct questions come to mind:
+
+1.  How does the availability of educational resources affect student scores?
+2.  How do the levels of educational attainment of both parents affect those of their children?
+3.  Is there a relationship between gender and higher performance in certain subjects? If so, what is the nature of such a relationship?
+4.  Are the students likely to perform well in one subject likely to perform well in another? What are the correlations between scores in the three subjects?
+
+In the section "Resources", we will show the relationship between the presence of various educational resources and math, science and reading scores. The variables include things like computer ownership, a personal room, internet access, and number of books in the house, among other things.
+
+In the section "Parental Attainment", we will examine how the level of educational attainment of parents may impact their child's academic performance. This is gauged by the International Standard Classification of Education (ISCED), a statistical framework for standardizing educational attainment levels across national systems. We will be looking at the association between parental ISCED levels to their child's testing outcomes.
+
+In the section "Results 3", we will be looking at the relationship between gender and performance in specific subjects, as well as observing correlations across the the scores in the three subjects.
+
+Finally, we will conclude by quickly summarizing our findings and recommending further paths of follow-up investigation based on what we found.
+
+This package must be installed to access our data (uncomment the code and download before knitting).
+
+```{r}
+#install.packages("learningtower")
+```
+
+Here are the other packages we will be using:
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+```
+
+# Quick Data Summary
+
+1.  Resources
+
+#list the variables you will be looking at and a few broad marginal summaries/totals
+
+2.  Parental Attainment
+
+3.  Gender
+
+4.  Subject Correlation
+
+# Results
+
+## Resources
+
+In your write-up, make sure to refer to all of the figures you create. You can include a hyperlink to the [scatterplot](#fig:scatterplot) by using the name of the code chunk (make sure, to give each code chunk a different name). In your markdown document you can create this link either by calling the function `chunkref` with the name of the code chunk in quotes, i.e. `r chunkref("scatterplot")` or by using the markdown expression `[scatterplot](#fig:scatterplot)`. Similarly, we can refer to the `r chunkref("2nd scatterplot")`. Note that the figure captions appear above the figures - this saves us from having to scroll up after following the link.
+
+```{r scatterplot, echo=FALSE, fig.cap="This is the figure caption. Make sure to use the description we practised in the homework: first sentence describes structure of the plot, second sentence describes main finding, third sentence describes outliers/follow-up.", message = FALSE}
+
+mtcars %>% 
+  ggplot(aes(x = wt, y = mpg)) + 
+  geom_point()
+```
+
+```{r 2nd scatterplot, echo=FALSE, fig.cap="This is the figure caption. Make sure to use the description we practised in the homework: first sentence describes structure of the plot, second sentence describes main finding, third sentence describes outliers/follow-up.", message = FALSE}
+
+mtcars %>% 
+  ggplot(aes(x = wt, y = mpg)) + 
+  geom_point()
+```
+
+Additionally, you can also refer to different sections in your writeup by using anchors (links) to section headers. Here, we are referring to subsection [Gender and other Insights]. The code for that is `[Results 3]`.
+
+## Parental Attainment
+
+## Gender and other Insights
+
+...
+
+# Conclusions
+
+Give a quick summary of your work. Here is the place to be a bit critical and discuss potential limitations. Add a sentence on what else you would have liked to include in your data exploration if you had more time or more members in your team.
+
+## Data source {.unnumbered}
+
+This data was originally compiled by PISA, a part of the OECD in 2018. It was rendered into an easy-to-use R package by the authors below.
+
+"learningtower" citation:
+
+    #>   Kevin Wang, Paul Yacobellis, Erika Siregar, Sarah Romanes, Kim
+    #>   Fitter, Giulio Valentino Dalla Riva, Dianne Cook, Nick Tierney and
+    #>   Priya Dingorkar (2021). learningtower: OECD PISA datasets from
+    #>   2000-2018 in an easy-to-use format.
+    #>   https://kevinwang09.github.io/learningtower/,
+    #>   https://github.com/kevinwang09/learningtower
+
+## References {.unnumbered}
+
+1.  Boser, U. (2022, June 7). *Better learning outcomes can help kick-start the economy*. Center for American Progress. Retrieved December 4, 2022, from <https://www.americanprogress.org/article/better-learning-outcomes-can-help-kick-start-economy/>
+
+2.  Brower, T. (2022, November 9). *Learning is a sure path to happiness: Science proves it*. Forbes. Retrieved December 4, 2022, from <https://www.forbes.com/sites/tracybrower/2021/10/17/learning-is-a-sure-path-to-happiness-science-proves-it/?sh=3ca951f9768e>
