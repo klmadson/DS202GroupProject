@@ -121,6 +121,8 @@ head(USA_students)
 
 ## Resources
 
+My focus for this research question was to identify the coorelation between resources such as computer and internet and if they have a significant impact on student scores. Following the same, I was able to draw a conclusion as follows:
+
 ```{r drop-na-comp}
 USA_students <- USA_students %>%
   drop_na(computer)
