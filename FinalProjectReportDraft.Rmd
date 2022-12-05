@@ -130,7 +130,16 @@ USA_students <- USA_students %>%
   drop_na(computer)
 ```
 
+My first step was to drop all values consisting of NA in order to give a more accurate representation of the data. Therefore, I did so by using the drop_na function. 
+
 ```{r comp-scatter-1}
+USA_students %>%
+  ggplot(aes(x = math , y = science , color = computer)) + geom_point() + coord_flip()
+```
+
+My second step involved creating a simple scatterplot to identify a pattern between the availability of a computer and subject scores such as math and science. This helped me to draw conclusions that I have tried to highlight during the final presentation.(I did the same for internet by replacing it as color = internet as shown below.)
+
+```{r comp-scatter-2}
 USA_students %>%
   ggplot(aes(x = math , y = science , color = computer)) + geom_point() + coord_flip()
 ```
@@ -142,9 +151,14 @@ USA_students %>%
   ggplot(aes(x = total_scores)) + geom_histogram(color = "red" , fill = "white" , binwidth = 15) + facet_grid(computer~internet , labeller = label_both)
 ```
 
+My third step was to create a new variable inside USA_students dataset and name it as total_scores. This new variable would have the total scores collected for math, science, and read. I followed through with this step because I wanted a cumulative results of scores and how having a computer or internet affects this performance. 
+Therefore, I went ahead and created a histogram graph with total_scores on the x axis, gave it some color and used facetting to compare the scores using computer and internet. 
+
 ```{r}
 mean(USA_students$total_scores)
 ```
+
+In order to better understand the scores shown on the graph, I used the mean of total_scores and reference to further investigate my argument and draw a valid conclusion.
 
 ## Parental Attainment
 
