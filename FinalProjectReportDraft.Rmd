@@ -74,14 +74,14 @@ Here are the other packages we will be using:
 ```{r}
 library(tidyverse)
 library(ggplot2)
+library(reshape2)
+library(GGally)
 ```
 
-```{r USA data}
+```{r USA data, echo=FALSE}
 library(learningtower)
 
 Pisa_2018 <- load_student(year = "2018")
-
-Pisa_2018
 
 summary(Pisa_2018$country)
 USA_students <- Pisa_2018 %>% filter(`country` == "USA")
@@ -213,8 +213,79 @@ USA_students %>%
 
 ## Gender and Other Insights
 
-...
+Let's take a look at PISA scores by gender.
 
+```{r to-long-form, echo=FALSE}
+USA_long <- USA_students %>% 
+  pivot_longer(cols = math:science, 
+               names_to = "Test_type", 
+               values_to = "score")
+```
+
+```{r gender-boxplots,echo=FALSE, fig.cap="These are side-by-side boxplot of PISA scores, faceted by gender. While the distribution of scores in science look very similar, there are some key differences in the distributions of math and reading scores. There are more outliers in the female reading and male math scores than any of the other plots. Furthermore, male math scores appear have a slightly higher median than female math scores, yet the opposite is true for female reading scores with respect to male reading scores. Perhaps we should investigate the nature of this difference.", message = FALSE}
+USA_long %>%
+  ggplot(aes(x = gender, y = score)) +
+  geom_boxplot() +
+  facet_wrap(~Test_type)
+```
+
+```{r gender-histograms, echo=FALSE, fig.cap="Expanding off of our results from earlier, here are side-by-side histograms comparing the scores between genders by color. We can see that despite small differences, there is still signficant overlap in all three distributions. Perhaps it may help to look more closely at concrete numbers in order to better interpret these visualizations.", message=FALSE}
+USA_long %>%
+  ggplot(aes(x = score, fill = gender, colour = gender)) + 
+  geom_histogram(alpha = 0.5, position = "identity") +
+  facet_wrap(~Test_type)
+```
+
+```{r means-std-dev}
+USA_long %>%
+  group_by(gender, Test_type) %>%
+  summarise(mean_score = mean(score),
+            std_dev = sd(score))
+```
+
+This is a table outlining the mean score and standard deviation of each section of the assessment separated by gender. An interesting thing to point out is that male students have a higher standard deviation on every subject relative to female students. This means that male scores have a slightly higher spread on average than female scores. On the other hand, the largest difference in mean scores between males and females would be in reading, with females scoring 23.76 points higher than their male peers. The second largest, albeit much smaller, would be in math, where male students score 6.49 points higher than female students on average. Let's look a bit further.
+
+```{r outliers}
+USA_long %>%
+  group_by(gender, Test_type) %>%
+  summarise(Min = min(score),
+            Q1 = quantile(score, .25),
+            Avg_score = mean(score), 
+            Q3 = quantile(score, .75),
+            Max = max(score))
+```
+
+This a table of the 5 number summaries for each section of the assessment separated by gender. We can see that even when the despite having a slightly higher mean in math, male students have a much lower minimum in math scores than female students. It is also worth noticing how high the maximum of female reading scores is. However, it doesn't appear like that outlier is skewing our results too much, as the interquartile range for female reading scores is still set substantially higher than males. In math, though, it appears as though the bottom performers may have a significant impact on the mean. It is clear that there are slight irregularities in our distribution when grouping by gender.
+
+# Correlations Between Subjects
+
+Let's now turn our attention to the relationship of scores to one another across subjects.
+
+```{r scatterplot-scores, echo=FALSE, fig.cap="This is a scatterplot matrix of math, reading and science scores among all students. The numbers in the top right panels represent the values of r for each pair, all of which are very high. This means that success in one subject is highly correlated with success in another. Let's approach this from a difference angle.", message=FALSE}
+
+USA_students %>%
+  select(math, read, science) %>%
+  ggpairs()
+```
+
+```{r add-total-average-score, echo=FALSE}
+USA_students2 <- USA_students %>%
+  group_by(student_id) %>%
+  mutate(total_score = sum(math,science,read)/3)
+
+USA_long2 <- USA_students2 %>% 
+  pivot_longer(cols = math:science, 
+               names_to = "Test_type", 
+               values_to = "score")
+```
+
+```{r scatterplot-with-average-score, echo=FALSE, fig.cap="This is a plot of scores on the three individual sections of the test in relation to the student's average score overall. The linear relationship is very strong. Success in one subject appears to be highly correlated with overall success. Perhaps this has implications of our contemporary emphasis on individual *talent*(e.g. the idea of being a *math person*, as opposed to an *English person*) on academic performace.", message=FALSE}
+
+USA_long2 %>%
+  ggplot(aes(x = score, y = total_score)) +
+  geom_point() +
+  facet_wrap(~Test_type)
+```
 # Conclusions
 
 In terms of parental attainment, I found that for children with parents who have a higher education, tend to get higher test scores in all three areas of math, science and reading compared to those with parents who have a lower education on the ISCED scale. If we had more time, I would have explored whether one parent with a specific education level will have a greater influence on the child's scores even if the other parent is on the opposite side of the education level scale.
