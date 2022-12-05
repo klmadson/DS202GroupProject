@@ -257,6 +257,20 @@ USA_long %>%
 
 This a table of the 5 number summaries for each section of the assessment separated by gender. We can see that even when the despite having a slightly higher mean in math, male students have a much lower minimum in math scores than female students. It is also worth noticing how high the maximum of female reading scores is. However, it doesn't appear like that outlier is skewing our results too much, as the interquartile range for female reading scores is still set substantially higher than males. In math, though, it appears as though the bottom performers may have a significant impact on the mean. It is clear that there are slight irregularities in our distribution when grouping by gender.
 
+What about average performance overall?
+
+```{r average-gender}
+USA_students2 <- USA_students %>%
+  group_by(student_id) %>%
+  mutate(total_score = sum(math,science,read)/3)
+
+USA_students2 %>%
+  group_by(gender) %>%
+  summarise(avg_gender_score = mean(total_score))
+```
+
+This is a table showing average performance across all PISA assessments overall. It appears as though on average, female students are outperforming male students by 5.52 points. More research must be done to determine exactly why that is.
+
 # Correlations Between Subjects
 
 Let's now turn our attention to the relationship of scores to one another across subjects.
@@ -268,11 +282,7 @@ USA_students %>%
   ggpairs()
 ```
 
-```{r add-total-average-score, echo=FALSE}
-USA_students2 <- USA_students %>%
-  group_by(student_id) %>%
-  mutate(total_score = sum(math,science,read)/3)
-
+```{r add-total-average-score-long, echo=FALSE}
 USA_long2 <- USA_students2 %>% 
   pivot_longer(cols = math:science, 
                names_to = "Test_type", 
@@ -286,9 +296,12 @@ USA_long2 %>%
   geom_point() +
   facet_wrap(~Test_type)
 ```
+
 # Conclusions
 
 In terms of parental attainment, I found that for children with parents who have a higher education, tend to get higher test scores in all three areas of math, science and reading compared to those with parents who have a lower education on the ISCED scale. If we had more time, I would have explored whether one parent with a specific education level will have a greater influence on the child's scores even if the other parent is on the opposite side of the education level scale.
+
+When looking at gender
 
 Give a quick summary of your work. Here is the place to be a bit critical and discuss potential limitations. Add a sentence on what else you would have liked to include in your data exploration if you had more time or more members in your team.
 
