@@ -29,6 +29,7 @@ chunkref <- local({
 library(ggplot2)
 library(dplyr)
 ```
+
 ## DS 202: Data Acquisition and Exploratory Data Analysis {.unnumbered}
 
 # Student Success: An Examination of the Factors Behind Academic Performance in the United States {.unnumbered}
@@ -83,85 +84,111 @@ Pisa_2018 <- load_student(year = "2018")
 Pisa_2018
 
 summary(Pisa_2018$country)
-library(dplyr)
 USA_students <- Pisa_2018 %>% filter(`country` == "USA")
 
-View(USA_students)
+head(USA_students)
 ```
+
 # Quick Data Summary
 
-1.  Resources
+1.  **Resources**
 
-#list the variables you will be looking at and a few broad marginal summaries/totals
+    In this section, we will be looking at these specific variables and their relationship to our scores:
 
-2.  Parental Attainment
+    "Internet": The presence of available internet access for the student.
 
-3.  Gender
+    "Computer": The presence of a working computer in the household.
 
-4.  Subject Correlation
+2.  **Parental Attainment**
+
+    In this section, we will examine the effect of these variables on our assessment scores:
+
+    "mother_educ": ISCED standardized level of educational attainment for the mother.
+
+    "father_educ": ISCED standardized level of educational attainment for the father.
+
+3.  **Gender**
+
+    This section will analyze the relationship between gender and scores in specific subjects. It will use
+
+    variable "Gender".
+
+    For sections 1-3, our response variables will bet the assessment scores, contained in the variables
+
+    "math", "read" and "science".
+
+4.  **Subject Correlation**
+
+We will then analyze the correlation between scores.
 
 # Results
 
 ## Resources
 
-In your write-up, make sure to refer to all of the figures you create. You can include a hyperlink to the [scatterplot](#fig:scatterplot) by using the name of the code chunk (make sure, to give each code chunk a different name). In your markdown document you can create this link either by calling the function `chunkref` with the name of the code chunk in quotes, i.e. `r chunkref("scatterplot")` or by using the markdown expression `[scatterplot](#fig:scatterplot)`. Similarly, we can refer to the `r chunkref("2nd scatterplot")`. Note that the figure captions appear above the figures - this saves us from having to scroll up after following the link.
-
-```{r scatterplot, echo=FALSE, fig.cap="This is the figure caption. Make sure to use the description we practised in the homework: first sentence describes structure of the plot, second sentence describes main finding, third sentence describes outliers/follow-up.", message = FALSE}
-
-mtcars %>% 
-  ggplot(aes(x = wt, y = mpg)) + 
-  geom_point()
+```{r drop-na-comp}
+USA_students <- USA_students %>%
+  drop_na(computer)
 ```
 
-```{r 2nd scatterplot, echo=FALSE, fig.cap="This is the figure caption. Make sure to use the description we practised in the homework: first sentence describes structure of the plot, second sentence describes main finding, third sentence describes outliers/follow-up.", message = FALSE}
-
-mtcars %>% 
-  ggplot(aes(x = wt, y = mpg)) + 
-  geom_point()
+```{r comp-scatter-1}
+USA_students %>%
+  ggplot(aes(x = math , y = science , color = computer)) + geom_point() + coord_flip()
 ```
 
-Additionally, you can also refer to different sections in your writeup by using anchors (links) to section headers. Here, we are referring to subsection [Gender and other Insights]. The code for that is `[Results 3]`.
+```{r resource-histogram}
+USA_students$total_scores <- USA_students$math + USA_students$science + USA_students$read
+
+USA_students %>%
+  ggplot(aes(x = total_scores)) + geom_histogram(color = "red" , fill = "white" , binwidth = 15) + facet_grid(computer~internet , labeller = label_both)
+```
+
+```{r}
+mean(USA_students$total_scores)
+```
 
 ## Parental Attainment
 
-Within this line of exploration, I wanted to focus on how mother and father education levels can affect the child's score in math, science and reading. To start, I removed the NA values within the mother and father education level variables. 
-```{r}
+Within this line of exploration, I wanted to focus on how mother and father education levels can affect the child's score in math, science and reading. To start, I removed the NA values within the mother and father education level variables.
+
+```{r drop-na-education}
 USA_students<-USA_students %>%
 drop_na(mother_educ,father_educ)
 ```
 
-This table was created to determine within the data set, which levels of education were lowest and highest on the scale. 
+This table was created to determine within the data set, which levels of education were lowest and highest on the scale.
 
-```{r}
+```{r education-scale-table}
 table(USA_students$mother_educ)
 table(USA_students$father_educ)
 ```
 
-To further explore, I then filtered for the ISCED 3A, or the highest education on the scale and eventually filtered for the lowest education level or less than ISCED1. Then, I found the average test scores for all three subjects using those new data sets. 
-```{r}
+To further explore, I then filtered for the ISCED 3A, or the highest education on the scale and eventually filtered for the lowest education level or less than ISCED1. Then, I found the average test scores for all three subjects using those new data sets.
+
+```{r education-filter}
 high_educ<-USA_students %>% 
  filter(mother_educ=="ISCED 3A",father_educ=="ISCED 3A") %>% head()
 high_educ
 ```
 
-```{r}
+```{r high-education-mean}
 mean(high_educ$math)
 mean(high_educ$read)
 mean(high_educ$science)
 ```
 
-```{r}
+```{r low-education-filter}
 low_educ<-USA_students %>% 
  filter(mother_educ=="less than ISCED1",father_educ=="less than ISCED1") %>% head()
 low_educ
 ```
 
-```{r}
+```{r low-education-mean}
 mean(low_educ$math)
 mean(low_educ$read)
 mean(low_educ$science)
 ```
-From this information, it clearly shows that a high education for parents results in higher scores on average for children. To visualize this information and further validate this hypothesis, I created three bar graphs below. 
+
+From this information, it clearly shows that a high education for parents results in higher scores on average for children. To visualize this information and further validate this hypothesis, I created three bar graphs below.
 
 ```{r 1st bar graph, echo=FALSE, fig.cap="In this bar graph of math scores by mother and father education, there aren't any significant outliers or skew. From this graph, I found that for those with a parent with an education of ISCED 3, the student's scores were higher. As a follow-up, I plan to look at the other kinds of test scores to make comparisons.", message = FALSE}
 
@@ -184,13 +211,13 @@ USA_students %>%
     geom_bar(position="dodge", stat="identity")
 ```
 
-## Gender and other Insights
+## Gender and Other Insights
 
 ...
 
 # Conclusions
 
-In terms of parental attainment, I found that for children with parents who have a higher education, tend to get higher test scores in all three areas of math, science and reading compared to those with parents who have a lower education on the ISCED scale. If we had more time, I would have explored whether one parent with a specific education level will have a greater influence on the child's scores even if the other parent is on the opposite side of the education level scale. 
+In terms of parental attainment, I found that for children with parents who have a higher education, tend to get higher test scores in all three areas of math, science and reading compared to those with parents who have a lower education on the ISCED scale. If we had more time, I would have explored whether one parent with a specific education level will have a greater influence on the child's scores even if the other parent is on the opposite side of the education level scale.
 
 Give a quick summary of your work. Here is the place to be a bit critical and discuss potential limitations. Add a sentence on what else you would have liked to include in your data exploration if you had more time or more members in your team.
 
