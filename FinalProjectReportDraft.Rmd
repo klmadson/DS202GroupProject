@@ -40,26 +40,22 @@ Authors: Kathryn Madson, Aaron Null, Aditi Pokharkar
 
 The goal of our examination is to explore the different variables involved in distinguishing why some students perform well in certain subjects and others might not. PISA, or the Program for International Student Assessment, is an initiative that administers tests to a random sample of 15-year-old students in pre-selected schools in participating countries. The assessment tracks performance in reading, writing and mathematics and also involves administering a lengthy questionnaire, cataloging many variables related to things such as family, lifestyle and resources. Our goal is to explore the most recent PISA data from 2018 in the United States in order to further understand both what the students the score high have in common and what the lower scoring students might need in order to improve their outcome.
 
--   what is the project about?
--   what is the motivation for doing it?
--   what data is your work based on? and where does it come from? = what are your main findings? (one sentence each)
-
 # Intro/Background/Motivation
 
 There are decades of research in support of the idea that higher levels of learning outcomes leads to higher economic growth and that investing in education can lead to higher salaries for workers and larger national GDP (Boser, 2022). Apart from the economic benefits of investing in education, there is also data to suggest a strong association between happiness and learning in general (Bower, 2022). PISA is a program administered by the OECD (Organisation for Economic Co-operation and Development), an organisation dedicated to gathering data in order to inform public policy decisions for its member states and set international standards. The PISA program allows national education systems to compared at a larger scale than ever before, allowing countries to learn from one another and separate what policies work and what do not. The organisation shares our conviction that discovering the patterns at work in student success in important in order to shape policy and ultimately improve the lives of students (and the citizenry at large) around the world.
 
 For our exploration, 4 distinct questions come to mind:
 
-1.  How does the availability of educational resources affect student scores?
-2.  How do the levels of educational attainment of both parents affect those of their children?
-3.  Is there a relationship between gender and higher performance in certain subjects? If so, what is the nature of such a relationship?
-4.  Are the students likely to perform well in one subject likely to perform well in another? What are the correlations between scores in the three subjects?
+1.  How does the availability of educational resources affect student scores? (Aditi)
+2.  How do the levels of educational attainment of both parents affect those of their children? (Kathryn)
+3.  Is there a relationship between gender and higher performance in certain subjects? If so, what is the nature of such a relationship? (Aaron)
+4.  Are the students likely to perform well in one subject likely to perform well in another? What are the correlations between scores in the three subjects? (Aaron)
 
-In the section "Resources", we will show the relationship between the presence of various educational resources and math, science and reading scores. The variables include things like computer ownership, a personal room, internet access, and number of books in the house, among other things.
+In the section "Resources", we will show the relationship between the presence of various educational resources and math, science and reading scores. The variables we will be looking at will be the presence of internet access and of a working computer, respectively.
 
 In the section "Parental Attainment", we will examine how the level of educational attainment of parents may impact their child's academic performance. This is gauged by the International Standard Classification of Education (ISCED), a statistical framework for standardizing educational attainment levels across national systems. We will be looking at the association between parental ISCED levels to their child's testing outcomes.
 
-In the section "Results 3", we will be looking at the relationship between gender and performance in specific subjects, as well as observing correlations across the the scores in the three subjects.
+In the section "Gender", we will be looking at the relationship between gender and performance in specific subjects, as well as observing correlations across the the scores in the three subjects.
 
 Finally, we will conclude by quickly summarizing our findings and recommending further paths of follow-up investigation based on what we found.
 
@@ -119,7 +115,7 @@ head(USA_students)
 
 4.  **Subject Correlation**
 
-We will then analyze the correlation between scores.
+    We will then analyze the correlation between scores and discuss the potential implications.
 
 # Results
 
@@ -130,7 +126,7 @@ USA_students <- USA_students %>%
   drop_na(computer)
 ```
 
-My first step was to drop all values consisting of NA in order to give a more accurate representation of the data. Therefore, I did so by using the drop_na function. 
+My first step was to drop all values consisting of NA in order to give a more accurate representation of the data. Therefore, I did so by using the drop_na function.
 
 ```{r comp-scatter-1}
 USA_students %>%
@@ -151,8 +147,7 @@ USA_students %>%
   ggplot(aes(x = total_scores)) + geom_histogram(color = "red" , fill = "white" , binwidth = 15) + facet_grid(computer~internet , labeller = label_both)
 ```
 
-My third step was to create a new variable inside USA_students dataset and name it as total_scores. This new variable would have the total scores collected for math, science, and read. I followed through with this step because I wanted a cumulative results of scores and how having a computer or internet affects this performance. 
-Therefore, I went ahead and created a histogram graph with total_scores on the x axis, gave it some color and used facetting to compare the scores using computer and internet. 
+My third step was to create a new variable inside USA_students dataset and name it as total_scores. This new variable would have the total scores collected for math, science, and read. I followed through with this step because I wanted a cumulative results of scores and how having a computer or internet affects this performance. Therefore, I went ahead and created a histogram graph with total_scores on the x axis, gave it some color and used facetting to compare the scores using computer and internet.
 
 ```{r}
 mean(USA_students$total_scores)
@@ -303,7 +298,7 @@ USA_long2 <- USA_students2 %>%
                values_to = "score")
 ```
 
-```{r scatterplot-with-average-score, echo=FALSE, fig.cap="This is a plot of scores on the three individual sections of the test in relation to the student's average score overall. The linear relationship is very strong. Success in one subject appears to be highly correlated with overall success. Perhaps this has implications of our contemporary emphasis on individual *talent*(e.g. the idea of being a *math person*, as opposed to an *English person*) on academic performace.", message=FALSE}
+```{r scatterplot-with-average-score, echo=FALSE, fig.cap="This is a plot of scores on the three individual sections of the test in relation to the student's average score overall. The linear relationship is very strong. Success in one subject appears to be highly correlated with overall success. Perhaps this has implications of our contemporary emphasis on individual *talent* (e.g. the idea of being a *math person*, as opposed to an *English person*) on academic performace.", message=FALSE}
 
 USA_long2 %>%
   ggplot(aes(x = score, y = total_score)) +
@@ -315,9 +310,11 @@ USA_long2 %>%
 
 In terms of parental attainment, I found that for children with parents who have a higher education, tend to get higher test scores in all three areas of math, science and reading compared to those with parents who have a lower education on the ISCED scale. If we had more time, I would have explored whether one parent with a specific education level will have a greater influence on the child's scores even if the other parent is on the opposite side of the education level scale.
 
-When looking at gender
+When looking at gender, it appears as though the distribution of scores is not uniform across subjects. Female students outperform men by a significant margin in reading, while male students students have a slightly larger mean score than female students in math. I believe that many of these differences in scores represent cultural attitudes surrounding these subjects in the contemporary United States. Women tend to be raised with an increased emphasis on communication skills relative to men. It is also possible that girls generally enjoy reading more books from an early age than do boys, which would increase their performance on these tests. On the other hand, men are often celebrated more for their technical skills than their cultural knowledge or communication skills (at least in the United States). Furthermore, the unfortunate notion of STEM subjects being a "boy's club" still persists in contemporary Western culture, though this is beginning to change. I predict that as culture changes to be more inclusive toward women interested in Math and to celebrate mathematical ability in women to a greater degree, math scores will increase for female students. Furthermore, I believe a similar principle holds true for male students with respect for reading: boys must be celebrated for their ability to comprehend complex texts and to use language effectively. It would be interesting to compare scores with other years (as well as the upcoming round of tests) to determine if scores are indeed moving in a direction of becoming more balanced.
 
-Give a quick summary of your work. Here is the place to be a bit critical and discuss potential limitations. Add a sentence on what else you would have liked to include in your data exploration if you had more time or more members in your team.
+As we've predicted, performance in all three subjects measured correlate very highly with one another. This has potential implications for the validity of the idea of highly specified "talents" being the main driver of performance in a given subject. This goes hand in hand with the common notion of "being a math person"; that being good at math necessarily means that you are "worse" in reading. Our findings, however, find a high correlation between math and reading scores. This suggest that there is a common factor underlying performance across all three domains. I would predict that "hard work" and the presence of good study habits plays a significant role in this.
+
+Overall, we believe our results to be compelling. While unseen or unexplored factors likely remain lurking behind our results, we believe we have uncovered some important trends that can be used to inform potential interventions in improving our education system.
 
 ## Data source {.unnumbered}
 
