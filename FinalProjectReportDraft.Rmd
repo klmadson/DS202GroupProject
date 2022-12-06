@@ -116,6 +116,26 @@ head(USA_students)
 4.  **Subject Correlation**
 
     We will then analyze the correlation between scores and discuss the potential implications.
+    
+```{r basic-stats}
+dim(USA_students)
+
+str(USA_students)
+
+summary(USA_students$gender)
+
+USA_students %>%
+  summarise(avg_math = mean(math),
+            avg_read = mean(read),
+            avg_science = mean(science))
+```
+
+Some basic facts:
+
+There are 22 variables in our dataset, most of which are factors (16) with the others being numeric (6).
+Furthermore, there are 4,838 students in our dataset, 2376 of them being female and 2462 of them being male. The average math score for all students is 473.14, the average reading score 500.15, and the average science score 497.28. <br>
+
+Let's take a closer look. <br>
 
 # Results
 
