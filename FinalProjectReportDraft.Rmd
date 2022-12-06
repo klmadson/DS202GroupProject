@@ -135,7 +135,7 @@ Some basic facts:
 There are 22 variables in our dataset, most of which are factors (16) with the others being numeric (6).
 Furthermore, there are 4,838 students in our dataset, 2376 of them being female and 2462 of them being male. The average math score for all students is 473.14, the average reading score 500.15, and the average science score 497.28. <br>
 
-Let's take a closer look. <br>
+Let's take a look at our results. <br>
 
 # Results
 
