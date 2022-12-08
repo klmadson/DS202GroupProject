@@ -244,6 +244,9 @@ USA_students %>%
     geom_bar(position="dodge", stat="identity")
 ```
 
+
+Based on feedback from our presentation, I added three box plots showing father education by level and in turn how that impacts the child's scores in math, science and reading. Since mother and father education are similar, I determined that it would be okay to show one of the parent's education levels, since the results were practically the same in terms of box plots. 
+
 ```{r 1st box plot, echo=FALSE, fig.cap="In this box plot of father education by math score, I can see that with a 3A education for the father, the child's math scores are visibly higher. While there are outliers on both the high and low spectrum of scores, there could be other factors like internet access effecting this. This graph reaffirms the idea that with a higher education for parents, the child's score will be higher.", message = FALSE}
 
 USA_students %>%
