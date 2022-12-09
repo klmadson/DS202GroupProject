@@ -278,7 +278,7 @@ USA_long <- USA_students %>%
 
 ```{r gender-boxplots,echo=FALSE, fig.cap="These are side-by-side boxplot of PISA scores, faceted by gender. While the distribution of scores in science look very similar, there are some key differences in the distributions of math and reading scores. There are more outliers in the female reading and male math scores than any of the other plots. Furthermore, male math scores appear have a slightly higher median than female math scores, yet the opposite is true for female reading scores with respect to male reading scores. Perhaps we should investigate the nature of this difference.", message = FALSE}
 USA_long %>%
-  ggplot(aes(x = gender, y = score)) +
+  ggplot(aes(x = gender, y = score, fill = gender)) +
   geom_boxplot() +
   facet_wrap(~Test_type)
 ```
