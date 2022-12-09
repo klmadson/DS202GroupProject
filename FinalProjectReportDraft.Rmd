@@ -154,7 +154,11 @@ My first step was to drop all values consisting of NA in order to give a more ac
 
 ```{r comp-scatter-1}
 USA_students %>%
-  ggplot(aes(x = math , y = science , color = computer)) + geom_point() + coord_flip()
+  ggplot(aes(x = math , y = science , color = computer)) + 
+  geom_point() +
+  scale_color_manual(values = c("red", "turquoise3")) +
+  scale_size_manual(values = c(2,.3)) +
+  coord_flip()
 ```
 
 My second step involved creating a simple scatterplot to identify a pattern between the availability of a computer and subject scores such as math and science. This helped me to draw conclusions that I have tried to highlight during the final presentation.(I did the same for internet by replacing it as color = internet as shown below.)
