@@ -226,46 +226,36 @@ mean(low_educ$science)
 
 From this information, it clearly shows that a high education for parents results in higher scores on average for children. To visualize this information and further validate this hypothesis, I created three bar graphs below. Within these graphs, the scores for math, science and reading, I believe are the average scores for each of the education levels. 
 
-```{r 1st bar graph, echo=FALSE, fig.cap="In this bar graph of math scores by mother and father education, there aren't any significant outliers or skew. From this graph, I found that for those with a parent with an education of ISCED 3, the student's scores were higher. As a follow-up, I plan to look at the other kinds of test scores to make comparisons.", message = FALSE}
+```{r 1-3 bar graphs, echo=FALSE, fig.cap="In these bar graphs of math,science and reading scores by mother and father education, there aren't any significant outliers or skew. From this graph, I found that for those with a parent with an education of ISCED 3, the student's scores were higher. As a follow-up, I plan to look at the other kinds of test scores to make comparisons."}
 
-USA_students %>%
-  ggplot(aes(x=mother_educ, y=math,fill=father_educ)) + 
-    geom_bar(position="dodge", stat="identity")
+library(patchwork)
+p1 <- ggplot(data=USA_students,aes(x=mother_educ,y=math,fill=father_educ)) +
+  geom_bar(position ="dodge",stat="identity")
+
+p2 <- ggplot(data=USA_students,aes(x=mother_educ,y=science,fill=father_educ)) +
+  geom_bar(position ="dodge",stat="identity")
+
+p3 <- ggplot(data=USA_students,aes(x=mother_educ,y=read,fill=father_educ)) +
+  geom_bar(position ="dodge",stat="identity")
+
+p1 / p2 / p3
 ```
-
-```{r 2nd bar graph, echo=FALSE, fig.cap="In this bar graph of science scores by mother and father education, there aren't any significant outliers or skew. From this graph, I found similar data to math that for those with a parent with an education of ISCED 3, the student's scores were higher. As a follow-up, I plan to look at the other kinds of test scores to make comparisons.", message = FALSE}
-
-USA_students %>%
-  ggplot(aes(x=mother_educ, y=science,fill=father_educ)) + 
-    geom_bar(position="dodge", stat="identity")
-```
-
-```{r 3rd bar graph, echo=FALSE, fig.cap="In this bar graph of reading scores by mother and father education, there aren't any significant outliers or skew. From this graph, I found similar data to math and science scores, that for those with a parent with an education of ISCED 3, the student's scores were higher. This information confirms the idea that children have higher scores if their parents have more years in education.", message = FALSE}
-
-USA_students %>%
-  ggplot(aes(x=mother_educ, y=read,fill=father_educ)) + 
-    geom_bar(position="dodge", stat="identity")
-```
-
 
 Based on feedback from our presentation, I added three box plots showing father education by level and in turn how that impacts the child's scores in math, science and reading. Since mother and father education are similar, I determined that it would be okay to show one of the parent's education levels, since the results were practically the same in terms of box plots. 
 
-```{r 1st box plot, echo=FALSE, fig.cap="In this box plot of father education by math score, I can see that with a 3A education for the father, the child's math scores are visibly higher. While there are outliers on both the high and low spectrum of scores, there could be other factors like internet access effecting this. This graph reaffirms the idea that with a higher education for parents, the child's score will be higher.", message = FALSE}
+```{r 1-3 box plots, echo=FALSE, fig.cap="In these box plots of father education by math, science and reading score, I can see that with a 3A education for the father, the child's science scores are visibly higher. While there are outliers on both the high and low spectrum of scores, there could be other factors like internet access effecting this. This graph reaffirms the idea that with a higher education for parents, the child's score will be higher."}
 
-USA_students %>%
-  ggplot(aes(x=father_educ,y=math,color=father_educ)) + geom_boxplot()
-```
 
-```{r 2nd box plot, echo=FALSE, fig.cap="In this box plot of father education by science score, I can see that with a 3A education for the father, the child's science scores are visibly higher. While there are outliers on both the high and low spectrum of scores similar to math scores, there could be other factors like internet access effecting this. This graph reaffirms the idea that with a higher education for parents, the child's score will be higher.", message = FALSE}
+p4 <- ggplot(data=USA_students,aes(x=father_educ,y=math,color=father_educ)) +
+  geom_boxplot()
 
-USA_students %>%
-  ggplot(aes(x=father_educ,y=science,color=father_educ)) + geom_boxplot()
-```
+p5 <- ggplot(data=USA_students,aes(x=father_educ,y=science,color=father_educ)) +
+  geom_boxplot()
 
-```{r 3rd box plot, echo=FALSE, fig.cap="In this box plot of father education by reading score, I can see that with a 3A education for the father, the child's reading scores are visibly higher. While there are outliers on both the high and low spectrum of scores similar to that of math and science scores, there could be other factors like internet access effecting this. This graph reaffirms the idea that with a higher education for parents, the child's score will be higher.", message = FALSE}
+p6 <- ggplot(data=USA_students,aes(x=father_educ,y=read,color=father_educ)) +
+  geom_boxplot()
 
-USA_students %>%
-  ggplot(aes(x=father_educ,y=read,color=father_educ)) + geom_boxplot()
+p4 / p5 / p6
 ```
 
 ## Gender and Other Insights
