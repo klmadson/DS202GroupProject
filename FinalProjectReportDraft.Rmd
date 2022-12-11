@@ -40,11 +40,11 @@ Authors: Kathryn Madson, Aaron Null, Aditi Pokharkar
 
 ## Abstract (TL;DR) {.unnumbered}
 
-The goal of our examination is to explore the different variables involved in distinguishing why some students perform well in certain subjects and others might not. PISA, or the Program for International Student Assessment, is an initiative that administers tests to a random sample of 15-year-old students in pre-selected schools in participating countries. The assessment tracks performance in reading, writing and mathematics and also involves administering a lengthy questionnaire, cataloging many variables related to things such as family, lifestyle and resources. Our goal is to explore the most recent PISA data from 2018 in the United States in order to further understand both what the students the score high have in common and what the lower scoring students might need in order to improve their outcome.
+The goal of our examination is to explore the different variables involved in distinguishing why some students perform well in certain subjects while others may struggle in some areas. PISA, or the Program for International Student Assessment, is an initiative that administers tests to a random sample of 15-year-old students in pre-selected schools in participating countries. The assessment tracks performance in reading, writing and mathematics and also involves administering a lengthy questionnaire, cataloging many variables related to things such as family, lifestyle and resources. Our goal is to explore the most recent PISA data from 2018 in the United States in order to further understand both what the students that score high have in common and what the lower scoring students might need in order to improve their outcomes.
 
 # Intro/Background/Motivation
 
-There are decades of research in support of the idea that higher levels of learning outcomes leads to higher economic growth and that investing in education can lead to higher salaries for workers and larger national GDP (Boser, 2022). Apart from the economic benefits of investing in education, there is also data to suggest a strong association between happiness and learning in general (Bower, 2022). PISA is a program administered by the OECD (Organisation for Economic Co-operation and Development), an organisation dedicated to gathering data in order to inform public policy decisions for its member states and set international standards. The PISA program allows national education systems to compared at a larger scale than ever before, allowing countries to learn from one another and separate what policies work and what do not. The organisation shares our conviction that discovering the patterns at work in student success in important in order to shape policy and ultimately improve the lives of students (and the citizenry at large) around the world.
+There are decades of research in support of the idea that higher levels of learning outcomes leads to higher economic growth and that investing in education can lead to higher salaries for workers and larger national GDP (Boser, 2022). Apart from the economic benefits of investing in education, there is also data to suggest a strong association between happiness and learning in general (Bower, 2022). PISA is a program administered by the OECD (Organisation for Economic Co-operation and Development), an organisation dedicated to gathering data in order to inform public policy decisions for its member states and set international standards. The PISA program allows national education systems to be compared at a larger scale than ever before, allowing countries to learn from one another and separate which policies work and which do not. The organisation shares our conviction that discovering the patterns at work in student success is important in order to help shape policy and ultimately improve the lives of students (and the citizenry at large) around the world.
 
 For our exploration, 4 distinct questions come to mind:
 
@@ -69,22 +69,21 @@ This package must be installed to access our data (uncomment the code and downlo
 
 Here are the other packages we will be using:
 
-```{r}
+```{r, message=FALSE}
 library(tidyverse)
 library(ggplot2)
 library(reshape2)
 library(GGally)
 ```
 
-```{r USA data, echo=FALSE}
+```{r USA data, echo=FALSE, message=FALSE}
 library(learningtower)
 
 Pisa_2018 <- load_student(year = "2018")
 
-summary(Pisa_2018$country)
 USA_students <- Pisa_2018 %>% filter(`country` == "USA")
 
-head(USA_students)
+head(USA_students, 5)
 ```
 
 # Quick Data Summary
@@ -119,7 +118,7 @@ head(USA_students)
 
     We will then analyze the correlation between scores and discuss the potential implications.
     
-```{r basic-stats}
+```{r basic-stats, message=FALSE}
 dim(USA_students)
 
 str(USA_students)
