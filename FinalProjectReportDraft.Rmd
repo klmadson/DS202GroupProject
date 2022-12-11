@@ -118,7 +118,7 @@ head(USA_students, 5)
 
     We will then analyze the correlation between scores and discuss the potential implications.
     
-```{r basic-stats, message=FALSE}
+```{r basic-stats}
 dim(USA_students)
 
 str(USA_students)
