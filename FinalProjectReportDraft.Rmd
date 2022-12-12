@@ -160,7 +160,7 @@ USA_students %>%
   coord_flip()
 ```
 
-My second step involved creating a simple scatterplot to identify a pattern between the availability of a computer and subject scores such as math and science. This helped me to draw conclusions that I have tried to highlight during the final presentation.(I did the same for internet by replacing it as color = internet as shown below.)
+My second step involved creating a simple scatterplot to identify a pattern between the availability of a computer and subject scores such as math and science. This helped me to draw conclusions that I have tried to highlight during the final presentation.(I did the same for internet by replacing it as color = internet as shown below.) 
 
 ```{r comp-scatter-2}
 USA_students %>%
@@ -346,7 +346,7 @@ USA_long2 %>%
 
 # Conclusions
 
-When it comes to resources and their correlation with subject scores, there are students who perform better when they have resources such as computer and internet. Through my research, I was able to identify and conclude that the usage of resources such as the computer or internet is highly beneficial in deciding whether a student does good or bad in their subjects. According to my research, having only one resource can result into imporved scores however, might not be the best solution for students who want to perform well in class. 
+When it comes to resources and their correlation with subject scores, there are students who perform better when they have resources such as computer and internet. For example, using the scatterplots that I made for internet and computer, I was able to realise that students who use these resources have a better chance at scoring a higher grade than those who do not use these resources. Through my research, I was able to identify and conclude that the usage of resources such as the computer or internet is highly beneficial in deciding whether a student does good or bad in their subjects. Moreover, having only one resource can result into improved scores however, might not be the best solution for students who want to perform well in class. 
 
 In terms of parental attainment, I found that for children with parents who have a higher education, tend to get higher test scores in all three areas of math, science and reading compared to those with parents who have a lower education on the ISCED scale. If we had more time, I would have explored whether one parent with a specific education level will have a greater influence on the child's scores even if the other parent is on the opposite side of the education level scale.
 
