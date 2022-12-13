@@ -1,11 +1,9 @@
 ---
-title: "DS 202 Final Project"
-output: 
-  github_document:
-    number_section: FALSE
+title: 'Final Project Report'
+author: "Kathryn Madson, Aditi Pokharkar, Aaron Null"
+date: "2022-12-04"
+output: html_document
 ---
-
-<!-- README.md is generated from README.Rmd. Please edit the README.Rmd file -->
 
 ```{r setup, include=FALSE}
 library(knitr)
@@ -28,105 +26,352 @@ chunkref <- local({
   }  
 })
 
+options(pillar.sigfig = 6)
+
 library(ggplot2)
 library(dplyr)
 ```
 
+## DS 202: Data Acquisition and Exploratory Data Analysis {.unnumbered}
 
-This repository serves as a starter repo for your final project, and this Rmd is supposed to serve as a starter file for your project report.
+# Student Success: An Examination of the Factors Behind Academic Performance in the United States {.unnumbered}
 
-## Part I: Repo Structure {.unnumbered}
-
-The structure sketched out below is an idea of what your repository might look like. You can use it as a starting base and change according to your needs. But think about the changes that you make!
-
-    -- code
-    |   |   -- any R scripts you need but don't want to include directly in the write-up
-    -- data
-    |   |   -- csv files (cleaned data)
-    -- data-raw
-    |   |   -- raw data files 
-    |   |   -- data description files, origin
-    |   |   -- Codebook
-    -- final-project.Rmd
-    -- images  # only images that are not created by the Rmd
-    -- LICENSE
-    -- README.md
-    -- README.Rmd
-    -- README_files # folder with files created during the knitting process
-
-## Part II: Project report {.unnumbered}
-
-
-
-# Title of your project {.unnumbered}
-
-Authors: First Name Last Name, First Name Last Name, ...
+Authors: Kathryn Madson, Aaron Null, Aditi Pokharkar
 
 ## Abstract (TL;DR) {.unnumbered}
 
-An abstract is a quick summary of your work. Ideally it should motivate someone to read the rest of the paper. Include one sentence each on
-
--   what is the project about?
--   what is the motivation for doing it?
--   what data is your work based on? and where does it come from? = what are your main findings? (one sentence each)
+The goal of our examination is to explore the different variables involved in distinguishing why some students perform well in certain subjects while others may struggle in some areas. PISA, or the Program for International Student Assessment, is an initiative that administers tests to a random sample of 15-year-old students in pre-selected schools in participating member states and uses the scores and other student data to inform educational policy-making at the national level. The assessment tracks performance in reading, writing and mathematics and also involves administering a lengthy questionnaire, cataloging many variables related to things such as family, lifestyle and resources. Our goal is to explore the most recent PISA data from 2018 in the United States in order to further understand both what the students that score high have in common and what the lower scoring students might need in order to improve their outcomes.
 
 # Intro/Background/Motivation
 
-What is the topic of your project, why is it relevant?
+There are decades of research in support of the idea that higher levels of learning outcomes leads to higher economic growth and that investing in education can lead to higher salaries for workers and larger national GDP (Boser, 2022). Apart from the economic benefits of investing in education, there is also data to suggest a strong association between happiness and learning in general (Bower, 2022). PISA is a program administered by the OECD (Organisation for Economic Co-operation and Development), an organisation dedicated to gathering data in order to inform public policy decisions for its member states and set international standards. The PISA program allows national education systems to be compared at a larger scale than ever before, allowing countries to learn from one another and separate which policies work and which do not. The organisation shares our conviction that discovering the patterns at work in student success is important in order to help shape policy and ultimately improve the lives of students (and the citizenry at large) around the world.
 
-At the end of the Intro, write a sentence describing what each of the (result) sections is about, e.g. in section [Results 1] we show the relationship between XXX and YYY,  section [Results 2] also considers the effect of variable ZZZ. ...
-Finally we conclude with a quick summary of our findings and potential follow-up work in section [Conclusions].
+For our exploration, 4 distinct questions come to mind:
 
-Somewhere at the beginning of your project, include a code chunk that includes all of the R packages you are using throughout. In this document, the setup code chunk is called `setup` (see line 8) Also make sure to set defaults for the code chunks - like should they be visible? (probably not: echo=FALSE). Do you want to automatically include warnings? (probably yes, for creating the Rmd, to make sure that all warnings are accounted for)
+1.  How does the availability of educational resources affect student scores? (Aditi)
+2.  How do the levels of educational attainment of both parents affect those of their children? (Kathryn)
+3.  Is there a relationship between gender and higher performance in certain subjects? If so, what is the nature of such a relationship? (Aaron)
+4.  Are the students likely to perform well in one subject likely to perform well in another? What are the correlations between scores in the three subjects? (Aaron)
+
+In the section "Resources", we will show the relationship between the presence of various educational resources and math, science and reading scores. The variables we will be looking at will be the presence of internet access and of a working computer, respectively.
+
+In the section "Parental Attainment", we will examine how the level of educational attainment of parents may impact their child's academic performance. This is gauged by the International Standard Classification of Education (ISCED), a statistical framework for standardizing educational attainment levels across national systems. We will be looking at the association between parental ISCED levels to their child's testing outcomes.
+
+In the section "Gender", we will be looking at the relationship between gender and performance in specific subjects, as well as observing correlations across the the scores in the three subjects.
+
+Finally, we will conclude by quickly summarizing our findings and recommending further paths of follow-up investigation based on what we found.
+
+This package must be installed to access our data (uncomment the code and download before knitting).
+
+```{r}
+#install.packages("learningtower")
+```
+
+Here are the other packages we will be using:
+
+```{r, message=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(reshape2)
+library(GGally)
+library(patchwork)
+```
+
+```{r USA data, echo=FALSE, message=FALSE}
+library(learningtower)
+
+Pisa_2018 <- load_student(year = "2018")
+
+USA_students <- Pisa_2018 %>% filter(`country` == "USA")
+
+head(USA_students, 5)
+```
 
 # Quick Data Summary
 
-What are the variables that you will be using in the main part of the report? What are their ranges? You could include a table with variable names, a short explanation, and (very broad) summary statistics.
+1.  **Resources**
+
+    In this section, we will be looking at these specific variables and their relationship to our scores:
+
+    "Internet": The presence of available internet access for the student.
+
+    "Computer": The presence of a working computer in the household.
+
+2.  **Parental Attainment**
+
+    In this section, we will examine the effect of these variables on our assessment scores:
+
+    "mother_educ": ISCED standardized level of educational attainment for the mother.
+
+    "father_educ": ISCED standardized level of educational attainment for the father.
+
+3.  **Gender**
+
+    This section will analyze the relationship between gender and scores in specific subjects. It will use
+
+    variable "Gender".
+
+    For sections 1-3, our response variables will bet the assessment scores, contained in the variables
+
+    "math", "read" and "science".
+
+4.  **Subject Correlation**
+
+    We will then analyze the correlation between scores and discuss the potential implications.
+    
+```{r basic-stats}
+dim(USA_students)
+
+str(USA_students)
+
+summary(USA_students$gender)
+
+USA_students %>%
+  summarise(avg_math = mean(math),
+            avg_read = mean(read),
+            avg_science = mean(science))
+```
+
+Some basic facts:
+
+There are 22 variables in our dataset, most of which are factors (16) with the others being numeric (6).
+Furthermore, there are 4,838 students in our dataset, 2376 of them being female and 2462 of them being male. The average math score for all students is 473.14, the average reading score 500.15, and the average science score 497.28. <br>
+
+Let's take a look at our results. <br>
 
 # Results
 
-Each line of exploration is supposed to be featured in one of the Results sections. Make sure to change to more interesting section headers!
+## Resources
 
-> How does the availability of educational resources affect student scores (Aditi)
+My focus for this research question was to identify the coorelation between resources such as computer and internet and if they have a significant impact on student scores. Following the same, I was able to draw a conclusion as follows:
 
-> How do parents affect the education of their offsprings (Kate)
-
-> Gender and correlation between scores - relationships between subject variables (Aaron)
-
-## Results 1
-
-In your write-up, make sure to refer to all of the figures you create. You can include a hyperlink to the [scatterplot](#fig:scatterplot) by using the name of the code chunk (make sure, to give each code chunk a different name). In your markdown document you can create this link either by calling the function `chunkref` with the name of the code chunk in quotes, i.e. `` r chunkref("scatterplot") `` or by using the markdown expression `[scatterplot](#fig:scatterplot)`. Similarly, we can refer to the `r chunkref("2nd scatterplot")`. Note that the figure captions appear above the figures - this saves us from having to scroll up after following the link.
-
-```{r scatterplot, echo=FALSE, fig.cap="This is the figure caption. Make sure to use the description we practised in the homework: first sentence describes structure of the plot, second sentence describes main finding, third sentence describes outliers/follow-up.", message = FALSE}
-
-mtcars %>% 
-  ggplot(aes(x = wt, y = mpg)) + 
-  geom_point()
+```{r drop-na-comp}
+USA_students <- USA_students %>%
+  drop_na(computer)
 ```
 
-```{r 2nd scatterplot, echo=FALSE, fig.cap="This is the figure caption. Make sure to use the description we practised in the homework: first sentence describes structure of the plot, second sentence describes main finding, third sentence describes outliers/follow-up.", message = FALSE}
+My first step was to drop all values consisting of NA in order to give a more accurate representation of the data. Therefore, I did so by using the drop_na function.
 
-mtcars %>% 
-  ggplot(aes(x = wt, y = mpg)) + 
-  geom_point()
+```{r comp-scatter-1}
+USA_students %>%
+  ggplot(aes(x = math , y = science , color = computer)) + 
+  geom_point() +
+  scale_color_manual(values = c("red", "turquoise3")) +
+  scale_size_manual(values = c(2,.3)) +
+  coord_flip()
 ```
 
-Additionally, you can also refer to different sections in your writeup by using anchors (links) to section headers. Here, we are referring to subsection [Results 3]. The code for that is `[Results 3]`.
+My second step involved creating a simple scatterplot to identify a pattern between the availability of a computer and subject scores such as math and science. This helped me to draw conclusions that I have tried to highlight during the final presentation.(I did the same for internet by replacing it as color = internet as shown below.) 
 
-## Results 2
+```{r comp-scatter-2}
+USA_students %>%
+  ggplot(aes(x = math , y = science , color = computer)) + geom_point() + coord_flip()
+```
 
-## Results 3
+```{r resource-histogram}
+USA_students$total_scores <- USA_students$math + USA_students$science + USA_students$read
 
-...
+USA_students %>%
+  ggplot(aes(x = total_scores)) + geom_histogram(color = "red" , fill = "white" , binwidth = 15) + facet_grid(computer~internet , labeller = label_both)
+```
+
+My third step was to create a new variable inside USA_students dataset and name it as total_scores. This new variable would have the total scores collected for math, science, and read. I followed through with this step because I wanted a cumulative results of scores and how having a computer or internet affects this performance. Therefore, I went ahead and created a histogram graph with total_scores on the x axis, gave it some color and used facetting to compare the scores using computer and internet.
+
+```{r}
+mean(USA_students$total_scores)
+```
+
+In order to better understand the scores shown on the graph, I used the mean of total_scores and reference to further investigate my argument and draw a valid conclusion.
+
+## Parental Attainment
+
+Within this line of exploration, I wanted to focus on how mother and father education levels can affect the child's score in math, science and reading. To start, I removed the NA values within the mother and father education level variables.
+
+```{r drop-na-education}
+USA_students<-USA_students %>%
+drop_na(mother_educ,father_educ)
+```
+
+This table was created to determine within the data set, which levels of education were lowest and highest on the scale.
+
+```{r education-scale-table}
+table(USA_students$mother_educ)
+table(USA_students$father_educ)
+```
+
+To further explore, I then filtered for the ISCED 3A, or the highest education on the scale and eventually filtered for the lowest education level or less than ISCED1. Then, I found the average test scores for all three subjects using those new data sets.
+
+```{r education-filter}
+high_educ<-USA_students %>% 
+ filter(mother_educ=="ISCED 3A",father_educ=="ISCED 3A") %>% head()
+high_educ
+```
+
+```{r high-education-mean}
+mean(high_educ$math)
+mean(high_educ$read)
+mean(high_educ$science)
+```
+
+```{r low-education-filter}
+low_educ<-USA_students %>% 
+ filter(mother_educ=="less than ISCED1",father_educ=="less than ISCED1") %>% head()
+low_educ
+```
+
+```{r low-education-mean}
+mean(low_educ$math)
+mean(low_educ$read)
+mean(low_educ$science)
+```
+
+From this information, it clearly shows that a high education for parents results in higher scores on average for children. To visualize this information and further validate this hypothesis, I created three bar graphs below. Within these graphs, the scores for math, science and reading, I believe are the average scores for each of the education levels. 
+
+```{r 1-3 bar graphs, echo=FALSE, fig.cap="In these bar graphs of math,science and reading scores by mother and father education, there aren't any significant outliers or skew. From this graph, I found that for those with a parent with an education of ISCED 3, the student's scores were higher. As a follow-up, I plan to look at the other kinds of test scores to make comparisons."}
+
+library(patchwork)
+p1 <- ggplot(data=USA_students,aes(x=mother_educ,y=math,fill=father_educ)) +
+  geom_bar(position ="dodge",stat="identity")
+
+p2 <- ggplot(data=USA_students,aes(x=mother_educ,y=science,fill=father_educ)) +
+  geom_bar(position ="dodge",stat="identity")
+
+p3 <- ggplot(data=USA_students,aes(x=mother_educ,y=read,fill=father_educ)) +
+  geom_bar(position ="dodge",stat="identity")
+
+p1 / p2 / p3
+```
+
+Based on feedback from our presentation, I added three box plots showing father education by level and in turn how that impacts the child's scores in math, science and reading. Since mother and father education are similar, I determined that it would be okay to show one of the parent's education levels, since the results were practically the same in terms of box plots. 
+
+```{r 1-3 box plots, echo=FALSE, fig.cap="In these box plots of father education by math, science and reading score, I can see that with a 3A education for the father, the child's science scores are visibly higher. While there are outliers on both the high and low spectrum of scores, there could be other factors like internet access effecting this. This graph reaffirms the idea that with a higher education for parents, the child's score will be higher."}
+
+
+p4 <- ggplot(data=USA_students,aes(x=father_educ,y=math,color=father_educ)) +
+  geom_boxplot()
+
+p5 <- ggplot(data=USA_students,aes(x=father_educ,y=science,color=father_educ)) +
+  geom_boxplot()
+
+p6 <- ggplot(data=USA_students,aes(x=father_educ,y=read,color=father_educ)) +
+  geom_boxplot()
+
+p4 / p5 / p6
+```
+
+## Gender and Other Insights
+
+Let's take a look at PISA scores by gender.
+
+```{r to-long-form, echo=FALSE}
+USA_long <- USA_students %>% 
+  pivot_longer(cols = math:science, 
+               names_to = "Test_type", 
+               values_to = "score")
+```
+
+```{r gender-boxplots,echo=FALSE, fig.cap="These are side-by-side boxplot of PISA scores, faceted by gender. While the distribution of scores in science look very similar, there are some key differences in the distributions of math and reading scores. There are more outliers in the female reading and male math scores than any of the other plots. Furthermore, male math scores appear have a slightly higher median than female math scores, yet the opposite is true for female reading scores with respect to male reading scores. Perhaps we should investigate the nature of this difference.", message = FALSE}
+USA_long %>%
+  ggplot(aes(x = gender, y = score, fill = gender)) +
+  geom_boxplot() +
+  facet_wrap(~Test_type)
+```
+
+```{r gender-histograms, echo=FALSE, fig.cap="Expanding off of our results from earlier, here are side-by-side histograms comparing the scores between genders by color. We can see that despite small differences, there is still signficant overlap in all three distributions. Perhaps it may help to look more closely at concrete numbers in order to better interpret these visualizations.", message=FALSE}
+USA_long %>%
+  ggplot(aes(x = score, fill = gender, colour = gender)) + 
+  geom_histogram(alpha = 0.5, position = "identity") +
+  facet_wrap(~Test_type)
+```
+
+```{r means-std-dev}
+USA_long %>%
+  group_by(gender, Test_type) %>%
+  summarise(mean_score = mean(score),
+            std_dev = sd(score))
+```
+
+This is a table outlining the mean score and standard deviation of each section of the assessment separated by gender. An interesting thing to point out is that male students have a higher standard deviation on every subject relative to female students. This means that male scores have a slightly higher spread on average than female scores. On the other hand, the largest difference in mean scores between males and females would be in reading, with females scoring 23.76 points higher than their male peers. The second largest, albeit much smaller, would be in math, where male students score 6.49 points higher than female students on average. Let's look a bit further.
+
+```{r outliers}
+USA_long %>%
+  group_by(gender, Test_type) %>%
+  summarise(Min = min(score),
+            Q1 = quantile(score, .25),
+            Avg_score = mean(score), 
+            Q3 = quantile(score, .75),
+            Max = max(score))
+```
+
+This a table of the 5 number summaries for each section of the assessment separated by gender. We can see that even when the despite having a slightly higher mean in math, male students have a much lower minimum in math scores than female students. It is also worth noticing how high the maximum of female reading scores is. However, it doesn't appear like that outlier is skewing our results too much, as the interquartile range for female reading scores is still set substantially higher than males. In math, though, it appears as though the bottom performers may have a significant impact on the mean. It is clear that there are slight irregularities in our distribution when grouping by gender.
+
+What about average performance overall?
+
+```{r average-gender}
+USA_students2 <- USA_students %>%
+  group_by(student_id) %>%
+  mutate(total_score = sum(math,science,read)/3)
+
+USA_students2 %>%
+  group_by(gender) %>%
+  summarise(avg_gender_score = mean(total_score))
+```
+
+This is a table showing average performance across all PISA assessments overall. It appears as though on average, female students are outperforming male students by 5.52 points. More research must be done to determine exactly why that is.
+
+# Correlations Between Subjects
+
+Let's now turn our attention to the relationship of scores to one another across subjects.
+
+```{r scatterplot-scores, echo=FALSE, fig.cap="This is a scatterplot matrix of math, reading and science scores among all students. The numbers in the top right panels represent the values of r for each pair, all of which are very high. This means that success in one subject is highly correlated with success in another. Let's approach this from a difference angle.", message=FALSE}
+
+USA_students %>%
+  select(math, read, science) %>%
+  ggpairs()
+```
+
+```{r add-total-average-score-long, echo=FALSE}
+USA_long2 <- USA_students2 %>% 
+  pivot_longer(cols = math:science, 
+               names_to = "Test_type", 
+               values_to = "score")
+```
+
+```{r scatterplot-with-average-score, echo=FALSE, fig.cap="This is a plot of scores on the three individual sections of the test in relation to the student's average score overall. The linear relationship is very strong. Success in one subject appears to be highly correlated with overall success. Perhaps this has implications of our contemporary emphasis on individual *talent* (e.g. the idea of being a *math person*, as opposed to an *English person*) on academic performace.", message=FALSE}
+
+USA_long2 %>%
+  ggplot(aes(x = score, y = total_score)) +
+  geom_point() +
+  facet_wrap(~Test_type)
+```
 
 # Conclusions
 
-Give a quick summary of your work. Here is the place to be a bit critical and discuss potential limitations. Add a sentence on what else you would have liked to include in your data exploration if you had more time or more members in your team. 
+When it comes to resources and their correlation with subject scores, there are students who perform better when they have resources such as computer and internet. For example, using the scatterplots that I made for internet and computer, I was able to realise that students who use these resources have a better chance at scoring a higher grade than those who do not use these resources. Through my research, I was able to identify and conclude that the usage of resources such as the computer or internet is highly beneficial in deciding whether a student does good or bad in their subjects. Moreover, having only one resource can result into improved scores however, might not be the best solution for students who want to perform well in class. 
+
+In terms of parental attainment, I found that for children with parents who have a higher education, tend to get higher test scores in all three areas of math, science and reading compared to those with parents who have a lower education on the ISCED scale. If we had more time, I would have explored whether one parent with a specific education level will have a greater influence on the child's scores even if the other parent is on the opposite side of the education level scale.
+
+When looking at gender, it appears as though the distribution of scores is not uniform across subjects. Female students outperform men by a significant margin in reading, while male students students have a slightly larger mean score than female students in math. I believe that many of these differences in scores represent cultural attitudes surrounding these subjects in the contemporary United States. Women tend to be raised with an increased emphasis on communication skills relative to men. It is also possible that girls generally enjoy reading more books from an early age than do boys, which would increase their performance on these tests. On the other hand, men are often celebrated more for their technical skills than their cultural knowledge or communication skills (at least in the United States). Furthermore, the unfortunate notion of STEM subjects being a "boy's club" still persists in contemporary Western culture, though this is beginning to change. I predict that as culture changes to be more inclusive toward women interested in Math and to celebrate mathematical ability in women to a greater degree, math scores will increase for female students. Furthermore, I believe a similar principle holds true for male students with respect for reading: boys must be celebrated for their ability to comprehend complex texts and to use language effectively. It would be interesting to compare scores with other years (as well as the upcoming round of tests) to determine if scores are indeed moving in a direction of becoming more balanced.
+
+As we've predicted, performance in all three subjects measured correlate very highly with one another. This has potential implications for the validity of the idea of highly specified "talents" being the main driver of performance in a given subject. This goes hand in hand with the common notion of "being a math person"; that being good at math necessarily means that you are "worse" in reading. Our findings, however, find a high correlation between math and reading scores. This suggest that there is a common factor underlying performance across all three domains. I would predict that "hard work" and the presence of good study habits plays a significant role in this.
+
+Overall, we believe our results to be compelling. While unseen or unexplored factors likely remain lurking behind our results, we believe we have uncovered some important trends that can be used to inform potential interventions in improving our education system.
 
 ## Data source {.unnumbered}
 
-Where does the data come from, who owns the data? Where are all the scripts that you need to clean the data?
+This data was originally compiled by PISA, a part of the OECD in 2018. It was rendered into an easy-to-use R package by the authors below.
+
+"learningtower" citation:
+
+    #>   Kevin Wang, Paul Yacobellis, Erika Siregar, Sarah Romanes, Kim
+    #>   Fitter, Giulio Valentino Dalla Riva, Dianne Cook, Nick Tierney and
+    #>   Priya Dingorkar (2021). learningtower: OECD PISA datasets from
+    #>   2000-2018 in an easy-to-use format.
+    #>   https://kevinwang09.github.io/learningtower/,
+    #>   https://github.com/kevinwang09/learningtower
 
 ## References {.unnumbered}
 
-List all resources you used.
+1.  Boser, U. (2022, June 7). *Better learning outcomes can help kick-start the economy*. Center for American Progress. Retrieved December 4, 2022, from <https://www.americanprogress.org/article/better-learning-outcomes-can-help-kick-start-economy/>
+
+2.  Brower, T. (2022, November 9). *Learning is a sure path to happiness: Science proves it*. Forbes. Retrieved December 4, 2022, from <https://www.forbes.com/sites/tracybrower/2021/10/17/learning-is-a-sure-path-to-happiness-science-proves-it/?sh=3ca951f9768e>
